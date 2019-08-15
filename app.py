@@ -7,13 +7,13 @@ from flask import *
 app = flask.Flask(__name__)
 app.secret_key = "aaabbbbccc"
 pp = pprint.PrettyPrinter(indent=4)
-
+reader = csv.DictReader(open("./csv/cfb1.csv"))
 
 @app.route("/")
 def contest():
-	reader = csv.DictReader(open("./csv/cfb1.csv"))
 	players = {"qbs" : [], "rbs" : [], "wrs" : []}
 	for row in reader:
+		print(row)
 		try:
 			playerObj = {
 				"name" : "",
