@@ -1,5 +1,1 @@
-Flask
-gunicorn
-csv
-random
-pprint
+python-3.7.3
