@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 @app.route("/")
 def contest():
-	reader = csv.DictReader(open("csv/cfb1.csv"))
+	reader = csv.DictReader(open("./csv/cfb1.csv"))
 	players = {"qbs" : [], "rbs" : [], "wrs" : []}
 	for row in reader:
 		try:
