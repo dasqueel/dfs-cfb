@@ -23,18 +23,20 @@ def contest():
 			}
 			row = row.values()
 			player = row[2]
+			# print(player)
 			playerObj["name"] = player[1]
 			playerObj["id"] = player[2]
 			playerObj["pos"] = player[3][:2]
 			playerObj["sal"] = int(player[4])
 			playerObj["date"] = player[5]
 			playerObj["team"] = player[6]
+			print playerObj
 
 			if playerObj["pos"] == "QB": players["qbs"].append(playerObj)
 			if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
 			if playerObj["pos"] == "WR": players["wrs"].append(playerObj)
 
-		except Exception as e: print(e)
+		except Exception as e: print e
 
 	return flask.jsonify(players)
 
