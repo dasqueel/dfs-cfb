@@ -4,8 +4,10 @@ import pprint
 import flask
 import traceback
 import sys
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
+CORS(app)
 app.secret_key = "aaabbbbccc"
 pp = pprint.PrettyPrinter(indent=4)
 reader = csv.DictReader(open("./csv/cfb1.csv"))
@@ -25,8 +27,7 @@ def contest():
 				"team" : "",
 			}
 			row = row.values()
-			print row
-			# player = row[2]
+
 			player = None
 			for el in row:
 				if type(el) == list: player = el
@@ -49,6 +50,18 @@ def contest():
 			print e
 
 	return flask.jsonify(players)
+
+@app.route("/test")
+def test():
+	# with open("outputs/Adjacency.csv") as fp:
+	#     csv = fp.read()
+	csv = '1,2,3\n4,5,6\n'
+	return flask.Response(
+			csv,
+			mimetype="text/csv",
+			headers={"Content-disposition":
+			"attachment; filename=myplot.csv"})
+
 
 # take in json from react app
 # @app.route("/out",methods=["POST"])
@@ -85,5 +98,5 @@ def contest():
 # 	return "ok"
 
 if __name__ == "__main__":
-    # app.run(debug = True, host="127.0.0.1", port=5001)
-    app.run(debug = True, use_reloader=True)
+		# app.run(debug = True, host="127.0.0.1", port=5001)
+		app.run(debug = True, use_reloader=True)
