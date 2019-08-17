@@ -25,17 +25,20 @@ def contest():
 				"team" : "",
 			}
 			row = row.values()
-			# print row
-			player = row[2]
-			print type(player)
+			print row
+			# player = row[2]
+			player = None
+			for el in row:
+				if type(el) == list: player = el
 
+			# print type(player)
 			playerObj["name"] = player[1]
 			playerObj["id"] = player[2]
 			playerObj["pos"] = player[3][:2]
 			playerObj["sal"] = int(player[4])
 			playerObj["date"] = player[5]
 			playerObj["team"] = player[6]
-			print playerObj
+			# print playerObj
 
 			if playerObj["pos"] == "QB": players["qbs"].append(playerObj)
 			if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
