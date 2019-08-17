@@ -13,7 +13,6 @@ reader = csv.DictReader(open("./csv/cfb1.csv"))
 def contest():
 	players = {"qbs" : [], "rbs" : [], "wrs" : []}
 	for row in reader:
-		print(row)
 		try:
 			playerObj = {
 				"name" : "",
@@ -25,7 +24,6 @@ def contest():
 			}
 			row = row.values()
 			player = row[2]
-			# print player
 			playerObj["name"] = player[1]
 			playerObj["id"] = player[2]
 			playerObj["pos"] = player[3][:2]
@@ -37,10 +35,9 @@ def contest():
 			if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
 			if playerObj["pos"] == "WR": players["wrs"].append(playerObj)
 
-		except:
-			# print 'error: '
-			pass
+		except Exception as e: print(e)
 
+	print(players)
 	return jsonify(players)
 
 # take in json from react app
