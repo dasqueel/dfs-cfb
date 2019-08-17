@@ -11,6 +11,7 @@ reader = csv.DictReader(open("./csv/cfb1.csv"))
 @app.route("/")
 def contest():
 	players = {"qbs" : [], "rbs" : [], "wrs" : []}
+
 	for row in reader:
 		try:
 			playerObj = {
@@ -23,7 +24,7 @@ def contest():
 			}
 			row = row.values()
 			print row
-			player = row[3]
+			player = row[2]
 			print player
 
 			playerObj["name"] = player[1]
