@@ -2,8 +2,6 @@ import csv
 import random
 import pprint
 import flask
-from flask import *
-from flask import jsonify
 
 app = flask.Flask(__name__)
 app.secret_key = "aaabbbbccc"
@@ -38,8 +36,7 @@ def contest():
 
 		except Exception as e: print(e)
 
-	print(players)
-	return jsonify(players)
+	return flask.jsonify(players)
 
 # take in json from react app
 # @app.route("/out",methods=["POST"])
