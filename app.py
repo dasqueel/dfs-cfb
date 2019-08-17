@@ -2,6 +2,7 @@ import csv
 import random
 import pprint
 import flask
+import traceback
 
 app = flask.Flask(__name__)
 app.secret_key = "aaabbbbccc"
@@ -23,9 +24,9 @@ def contest():
 				"team" : "",
 			}
 			row = row.values()
-			print row
+			# print row
 			player = row[2]
-			print player
+			print type(player)
 
 			playerObj["name"] = player[1]
 			playerObj["id"] = player[2]
@@ -39,7 +40,9 @@ def contest():
 			if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
 			if playerObj["pos"] == "WR": players["wrs"].append(playerObj)
 
-		except Exception as e: print e
+		except Exception as e:
+			traceback.print_exc(file=sys.stdout)
+			print e
 
 	return flask.jsonify(players)
 
