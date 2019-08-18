@@ -32,7 +32,8 @@ def contest():
 			for el in row:
 				if type(el) == list: player = el
 
-			# print type(player)
+			print type(player)
+			print player
 			playerObj["name"] = player[1]
 			playerObj["id"] = player[2]
 			playerObj["pos"] = player[3][:2]
