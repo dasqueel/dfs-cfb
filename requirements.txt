@@ -1,4 +1,3 @@
 flask
 gunicorn
-pprint
 flask_cors

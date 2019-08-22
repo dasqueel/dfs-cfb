@@ -1,6 +1,5 @@
 import csv
 import random
-import pprint
 import flask
 import traceback
 import sys
@@ -9,7 +8,6 @@ from flask_cors import CORS
 app = flask.Flask(__name__)
 CORS(app)
 app.secret_key = "aaabbbbccc"
-pp = pprint.PrettyPrinter(indent=4)
 
 @app.route("/")
 def contest():
@@ -55,49 +53,86 @@ def contest():
 
 @app.route("/test")
 def test():
-	# with open("outputs/Adjacency.csv") as fp:
-	#     csv = fp.read()
-	csv = '1,2,3\n4,5,6\n'
-	return flask.Response(
-			csv,
-			mimetype="text/csv",
-			headers={"Content-disposition":
-			"attachment; filename=myplot.csv"})
-
+	return 'aaayyeeee :D'
 
 # take in json from react app
-# @app.route("/out",methods=["POST"])
-# def out():
-# 	json = request.get_json()
-# 	print json
+@app.route("/out",methods=["POST"])
+def out():
+	json = flask.request.get_json()
 
-# 	qbs = json["qbs"]
-# 	rbs = json["rbs"]
-# 	wrs = json["wrs"]
+	qbs = json["finalQbs"]
+	rbs = json["finalRbs"]
+	wrs = json["finalWrs"]
+	totalEnteries = json["totalEnteries"]
+	fileName = json["fileName"]
 
-# 	lineups = flexNormalizer(setLineups(qbs, rbs, wrs))
+	lineups = [['' for x in range(0,8)] for i in range(0,totalEnteries)]
 
-# 	idLineups = []
-# 	for lineup in lineups:
-# 		l = [
-# 			lineup["qb"]["id"],
-# 			lineup["rb1"]["id"],
-# 			lineup["rb2"]["id"],
-# 			lineup["wr1"]["id"],
-# 			lineup["wr2"]["id"],
-# 			lineup["wr3"]["id"],
-# 			lineup["flex"]["id"],
-# 			lineup["sflex"]["id"]
-# 		]
-# 		idLineups.append(l)
-# 	for l in lineups: pp.pprint(l)
+	'''
+		if doing the create lineups on a list of 3k players
+	'''
 
-# 	with open("csv/dkout.csv", "wb") as f:
-# 			writer = csv.writer(f)
-# 			writer.writerow(["QB", "RB", "RB","WR","WR","WR","FLEX","S-FLEX"])
-# 			writer.writerows(idLineups)
+	qb1 = qbs[0]
+	for i in range(0,qb1["shares"]):
+		lineups[i][0] = str(qb1["id"])
 
-# 	return "ok"
+	qb2 = qbs[1]
+	for i in range(0,qb2["shares"]):
+		lineups[i][7] = str(qb2["id"])
+
+	rb1 = rbs[0]
+	for i in range(0,rb1["shares"]):
+		lineups[i][1] = str(rb1["id"])
+
+	rb2 = rbs[1]
+	for i in range(0,rb2["shares"]):
+		lineups[i][2] = str(rb2["id"])
+
+	wr1 = wrs[0]
+	for i in range(0,wr1["shares"]):
+		lineups[i][3] = str(wr1["id"])
+
+	wr2 = wrs[1]
+	for i in range(0,wr2["shares"]):
+		lineups[i][4] = str(wr2["id"])
+
+	wr3 = wrs[2]
+	for i in range(0,wr3["shares"]):
+		lineups[i][5] = str(wr3["id"])
+
+	# handle flex
+	flexSpot = 0
+	if len(rbs) > totalEnteries:
+		for i in range(2, len(rbs)):
+			rb = rbs[i]
+			lineups[flexSpot][6] = str(rb["id"])
+			flexSpot += 1
+
+	if len(wrs) > totalEnteries:
+		for i in range(3, len(wrs)):
+			wr = wrs[i]
+			lineups[flexSpot][6] = str(wr["id"])
+			# lineups[i - 3][6] = wr["name"]
+			flexSpot += 1
+
+	# for l in lineups: print l
+
+	file = "csv/out/"+fileName+".csv"
+	with open(file, "wb") as f:
+		writer = csv.writer(f)
+		writer.writerow(["QB", "RB", "RB","WR","WR","WR","FLEX","S-FLEX"])
+		writer.writerows(lineups)
+
+	# return 'https://dfs-cfb.herokuapp.com/csv/'+fileName
+	return 'http://localhost:5000/csv/'+fileName
+
+	# lineups = flexNormalizer(setLineups(qbs, rbs, wrs))
+
+@app.route('/csv/<fileName>') # this is a job for GET, not POST
+def plot_csv(fileName):
+		file = 'csv/out/'+fileName+'.csv'
+		fileAttach = fileName+'.csv'
+		return flask.send_file(file, mimetype='text/csv', attachment_filename=fileAttach, as_attachment=True)
 
 if __name__ == "__main__":
 		# app.run(debug = True, host="127.0.0.1", port=5001)
