@@ -9,9 +9,10 @@ app = flask.Flask(__name__)
 CORS(app)
 app.secret_key = "aaabbbbccc"
 
-@app.route("/")
-def contest():
-	reader = csv.DictReader(open("./csv/cfb1.csv"))
+@app.route("/<csvFile>")
+def contest(csvFile):
+	f = "./csv/"+csvFile+".csv"
+	reader = csv.DictReader(open(f))
 	players = {"qbs" : [], "rbs" : [], "wrs" : []}
 
 	for row in reader:
