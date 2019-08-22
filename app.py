@@ -116,7 +116,7 @@ def out():
 			# lineups[i - 3][6] = wr["name"]
 			flexSpot += 1
 
-	# for l in lineups: print l
+	for l in lineups: print l
 
 	file = "csv/out/"+fileName+".csv"
 	with open(file, "wb") as f:
