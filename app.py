@@ -123,8 +123,8 @@ def out():
 		writer.writerow(["QB", "RB", "RB","WR","WR","WR","FLEX","S-FLEX"])
 		writer.writerows(lineups)
 
-	# return 'https://dfs-cfb.herokuapp.com/csv/'+fileName
-	return 'http://localhost:5000/csv/'+fileName
+	return 'https://dfs-cfb.herokuapp.com/csv/'+fileName
+	# return 'http://localhost:5000/csv/'+fileName
 
 	# lineups = flexNormalizer(setLineups(qbs, rbs, wrs))
 
