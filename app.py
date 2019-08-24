@@ -9,48 +9,53 @@ app = flask.Flask(__name__)
 CORS(app)
 app.secret_key = "aaabbbbccc"
 
-@app.route("/<csvFile>")
-def contest(csvFile):
-	f = "./csv/"+csvFile+".csv"
-	reader = csv.DictReader(open(f))
-	players = {"qbs" : [], "rbs" : [], "wrs" : []}
+@app.route("/<contestType>/<csvFile>")
+def contest(contestType, csvFile):
+	if contestType == 'classic'
+		f = "./csv/"+csvFile+".csv"
+		reader = csv.DictReader(open(f))
+		players = {"qbs" : [], "rbs" : [], "wrs" : []}
 
-	for row in reader:
-		try:
-			playerObj = {
-				"name" : "",
-				"id" : "",
-				"pos" : "",
-				"sal" : "",
-				"date" : "",
-				"team" : "",
-			}
-			rowList = row.values()
+		for row in reader:
+			try:
+				playerObj = {
+					"name" : "",
+					"id" : "",
+					"pos" : "",
+					"sal" : "",
+					"date" : "",
+					"team" : "",
+				}
+				rowList = row.values()
 
-			player = None
-			for el in rowList:
-				# the first instance of a list isnt always a player list
-				if type(el) == list:
-					if el[0] != 'Name + ID':
-						player = el
+				player = None
+				for el in rowList:
+					# the first instance of a list isnt always a player list
+					if type(el) == list:
+						if el[0] != 'Name + ID':
+							player = el
 
-			if player != None:
-				playerObj["name"] = player[1]
-				playerObj["id"] = player[2]
-				playerObj["pos"] = player[3][:2]
-				playerObj["sal"] = int(player[4])
-				playerObj["date"] = player[5]
-				playerObj["team"] = player[6]
+				if player != None:
+					playerObj["name"] = player[1]
+					playerObj["id"] = player[2]
+					playerObj["pos"] = player[3][:2]
+					playerObj["sal"] = int(player[4])
+					playerObj["date"] = player[5]
+					playerObj["team"] = player[6]
 
-				if playerObj["pos"] == "QB": players["qbs"].append(playerObj)
-				if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
-				if playerObj["pos"] == "WR": players["wrs"].append(playerObj)
+					if playerObj["pos"] == "QB": players["qbs"].append(playerObj)
+					if playerObj["pos"] == "RB": players["rbs"].append(playerObj)
+					if playerObj["pos"] == "WR": players["wrs"].append(playerObj)
 
-		except Exception as e:
-			traceback.print_exc(file=sys.stdout)
-			print e
+			except Exception as e:
+				traceback.print_exc(file=sys.stdout)
+				print e
 
-	return flask.jsonify(players)
+		return flask.jsonify(players)
+	elif contestType == 'showdown':
+		return 'would return showdown url'
+	else:
+		return 'https://reddit.com/r/cfb/new'
 
 @app.route("/test")
 def test():
