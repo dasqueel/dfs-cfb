@@ -11,7 +11,7 @@ app.secret_key = "aaabbbbccc"
 
 @app.route("/<contestType>/<csvFile>")
 def contest(contestType, csvFile):
-	if contestType == 'classic'
+	if contestType == 'classic':
 		f = "./csv/"+csvFile+".csv"
 		reader = csv.DictReader(open(f))
 		players = {"qbs" : [], "rbs" : [], "wrs" : []}
@@ -53,7 +53,52 @@ def contest(contestType, csvFile):
 
 		return flask.jsonify(players)
 	elif contestType == 'showdown':
-		return 'would return showdown url'
+		f = "./csv/"+csvFile+".csv"
+		reader = csv.DictReader(open(f))
+		players = {"captains": [], "utilities": []}
+
+		for row in reader:
+			try:
+				playerObj = {
+					"name" : "",
+					"id" : "",
+					"pos" : "",
+					"sal" : "",
+					"date" : "",
+					"team" : "",
+				}
+				rowList = row.values()
+				# print rowList
+
+				player = None
+				for el in rowList:
+					# the first instance of a list isnt always a player list
+					if type(el) == list:
+						if el[0] != 'Name + ID':
+							player = el
+
+				# print player
+
+				if player != None:
+					playerObj["name"] = player[1]
+					playerObj["id"] = player[2]
+					playerObj["pos"] = player[3][:2]
+					playerObj["sal"] = int(player[4])
+					playerObj["date"] = player[5]
+					playerObj["team"] = player[6]
+
+					if playerObj["pos"] == "CP": players["captains"].append(playerObj)
+					if playerObj["pos"] == "UT": players["utilities"].append(playerObj)
+
+				# print playerObj
+
+			except Exception as e:
+				print e
+
+		# print players
+		return flask.jsonify(players)
+		# return 'would return showdown url'
+
 	else:
 		return 'https://reddit.com/r/cfb/new'
 
