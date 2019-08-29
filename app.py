@@ -118,6 +118,9 @@ def out():
 	# wrs = json["finalWrs"]
 	wrs = sorted(json["finalWrs"], key = lambda i: i['shares'], reverse=True)
 
+	# print 'rbs', rbs
+	# print 'wrs', wrs
+
 	totalEnteries = json["totalEnteries"]
 	fileName = json["fileName"]
 
@@ -152,24 +155,44 @@ def out():
 		lineups[i][4] = str(wr2["id"])
 
 	# need to sort the wrs or rbs by shares
-	wr3 = wrs[2]
-	for i in range(0,wr3["shares"]):
-		lineups[i][5] = str(wr3["id"])
+	if rbs[2]['shares'] > 1:
+		# flex is filled with rbs
+		# we are varying on wr3
+		# want to loop over all wr2 and beyond
+		# how do we know vary on wr3?
+		for i, wr in enumerate(wrs[2:]):
+			# pass
+			# print 'would add: ',i ,wr['name'], wr['id']
+			lineups[i][5] = str(wr['id'])
+	else:
+		wr3 = wrs[2]
+		for i in range(0,wr3["shares"]):
+			lineups[i][5] = str(wr3["id"])
 
 	# handle flex
-	flexSpot = 0
-	if len(rbs) > totalEnteries:
-		for i in range(2, len(rbs)):
-			rb = rbs[i]
-			lineups[flexSpot][6] = str(rb["id"])
-			flexSpot += 1
+	# need to update when varying on wr3
+	# print 'totalenteries', totalEnteries
+	# print 'len rbs', len(rbs)
+	if len(rbs) == 3:
+		# pass
+		rb3 = rbs[2]
+		for i in range(0,rb3["shares"]):
+			lineups[i][6] = str(rb3["id"])
+	else:
+		flexSpot = 0
+		if len(rbs) > totalEnteries:
+			for i in range(2, len(rbs)):
+				rb = rbs[i]
+				# print 'flex rb:', rb['name']
+				lineups[flexSpot][6] = str(rb["id"])
+				flexSpot += 1
 
-	if len(wrs) > totalEnteries:
-		for i in range(3, len(wrs)):
-			wr = wrs[i]
-			lineups[flexSpot][6] = str(wr["id"])
-			# lineups[i - 3][6] = wr["name"]
-			flexSpot += 1
+		if len(wrs) > totalEnteries:
+			for i in range(3, len(wrs)):
+				wr = wrs[i]
+				lineups[flexSpot][6] = str(wr["id"])
+				# lineups[i - 3][6] = wr["name"]
+				flexSpot += 1
 
 	for l in lineups: print l
 
