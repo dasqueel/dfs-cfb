@@ -52,6 +52,7 @@ def contest(contestType, csvFile):
 				print e
 
 		return flask.jsonify(players)
+
 	elif contestType == 'showdown':
 		f = "./csv/"+csvFile+".csv"
 		reader = csv.DictReader(open(f))
@@ -112,8 +113,11 @@ def out():
 	json = flask.request.get_json()
 
 	qbs = json["finalQbs"]
-	rbs = json["finalRbs"]
-	wrs = json["finalWrs"]
+	# rbs = json["finalRbs"]
+	rbs = sorted(json["finalRbs"], key = lambda i: i['shares'], reverse=True)
+	# wrs = json["finalWrs"]
+	wrs = sorted(json["finalWrs"], key = lambda i: i['shares'], reverse=True)
+
 	totalEnteries = json["totalEnteries"]
 	fileName = json["fileName"]
 
@@ -147,6 +151,7 @@ def out():
 	for i in range(0,wr2["shares"]):
 		lineups[i][4] = str(wr2["id"])
 
+	# need to sort the wrs or rbs by shares
 	wr3 = wrs[2]
 	for i in range(0,wr3["shares"]):
 		lineups[i][5] = str(wr3["id"])
