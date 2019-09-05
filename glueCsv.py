@@ -1,22 +1,20 @@
 import csv
+import sys
 
 finalRows = []
-files = ['yay', 'bob', 'cat','test']
+files = sys.argv[1:-1]
 
 for file in files:
-  # print 'file: ', file
   f = "./csv/out/"+file+".csv"
   reader = csv.DictReader(open(f))
   for row in reader:
-    # print row
     rowList = row.values()
-    # print rowList
     finalRows.append(rowList)
 
-print finalRows
 
-gluedFileName = 'money'
+gluedFileName = sys.argv[-1]
 file = "csv/out/"+gluedFileName+".csv"
+
 with open(file, "wb") as f:
   writer = csv.writer(f)
   writer.writerow(["QB", "RB", "RB","WR","WR","WR","FLEX","S-FLEX"])
