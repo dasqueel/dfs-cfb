@@ -155,8 +155,8 @@ def out():
 		lineups[i][4] = str(wr2["id"])
 
 	wr3 = wrs[2]
-		for i in range(0,wr3["shares"]):
-			lineups[i][5] = str(wr3["id"])
+	for i in range(0,wr3["shares"]):
+		lineups[i][5] = str(wr3["id"])
 
 	# need to sort the wrs or rbs by shares
 	# if len(rbs) > 2 and rbs[2]['shares'] > 1:
