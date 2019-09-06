@@ -155,19 +155,20 @@ def out():
 		lineups[i][4] = str(wr2["id"])
 
 	# need to sort the wrs or rbs by shares
-	if rbs[2]['shares'] > 1:
-		# flex is filled with rbs
-		# we are varying on wr3
-		# want to loop over all wr2 and beyond
-		# how do we know vary on wr3?
-		for i, wr in enumerate(wrs[2:]):
-			# pass
-			# print 'would add: ',i ,wr['name'], wr['id']
-			lineups[i][5] = str(wr['id'])
-	else:
-		wr3 = wrs[2]
-		for i in range(0,wr3["shares"]):
-			lineups[i][5] = str(wr3["id"])
+	if len(rbs) > 2:
+		if rbs[2]['shares'] > 1:
+			# flex is filled with rbs
+			# we are varying on wr3
+			# want to loop over all wr2 and beyond
+			# how do we know vary on wr3?
+			for i, wr in enumerate(wrs[2:]):
+				# pass
+				# print 'would add: ',i ,wr['name'], wr['id']
+				lineups[i][5] = str(wr['id'])
+		else:
+			wr3 = wrs[2]
+			for i in range(0,wr3["shares"]):
+				lineups[i][5] = str(wr3["id"])
 
 	# handle flex
 	# need to update when varying on wr3
